@@ -1,0 +1,40 @@
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .error-image {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .error-image img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .error-message {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #e60000;
+  }
+  
+  .error-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #002ae6;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .error-button:hover {
+    transition: 100ms;
+    background-color: #1aafff;
+  }

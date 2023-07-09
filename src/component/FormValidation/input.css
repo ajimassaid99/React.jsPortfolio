@@ -1,0 +1,77 @@
+.formInput {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+  
+  .formInput label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .formInput input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .formInput input:focus {
+    outline: none;
+    border-color: #0077FF;
+  }
+  
+  .formInput textarea {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+  }
+  
+  .formInput textarea:focus {
+    outline:#0077FF;
+  }
+  
+  .formInput span {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .passwordInput {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .passwordInput input {
+    flex-grow: 1;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .passwordInput button {
+    background-color: #fff;
+    border: none;
+    padding: 8px;
+    margin-right: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .focused .passwordInput{
+    outline:none;
+    border-color: #0077FF;
+  }
+  
+  .formInput.focused label {
+    color: #0077FF;
+  }
+  
+  .formInput .focused input {
+    border-color: #0077FF;
+  }
