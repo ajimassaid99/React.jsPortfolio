@@ -17,11 +17,9 @@ function Sidebar({ activeMenu, setActiveMenu }) {
         <ul className="p-4">
           <li className="mb-2">
             <NavLink
-              className={`flex items-center text-gray-300 hover:text-white ${
-                activeMenu === 'profile' && 'text-white'
-              }`}
-              onClick={() => {setActiveMenu('profile'); toggleSidebar()}}
+              className={`flex items-center text-gray-300 hover:text-white `}
               activeclassname="text-white"
+              to='../account'
             >
               <FontAwesomeIcon icon={faUser} className="mr-2" />
               Profile
@@ -29,11 +27,9 @@ function Sidebar({ activeMenu, setActiveMenu }) {
           </li>
           <li className="mb-2">
             <NavLink
-              className={`flex items-center text-gray-300 hover:text-white ${
-                activeMenu === 'orders' && 'text-white'
-              }`}
-              onClick={() => {setActiveMenu('orders'); toggleSidebar()}}
+              className={`flex items-center text-gray-300 hover:text-white `}
               activeclassname="text-white"
+              to="../orders"
             >
               <FontAwesomeIcon icon={faListAlt} className="mr-2" />
               Orders

@@ -2,23 +2,28 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrders } from '../../App/feature/orders/actions';
 import Loading from '../loading/loading';
+import EmptyOrder from './EmptyOrder';
 function OrderList() {
   const dispatch = useDispatch();
   const {  orders } = useSelector((state) => state);
   const handlePayment = (redirectUrl) => {
-    window.location.href = redirectUrl;
+    const win = window.open(redirectUrl, '_blank');
+    win.focus();
   };
 
   useEffect(() => {
     dispatch(getOrders());    
   }, [dispatch]);
 
-  console.log(orders.ordersList.length);
+
+  const handleRating = (orderId,ProductId)=>{
+    console.log(orderId,ProductId);
+  }
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Order List</h1>
       {orders.Loading && <Loading color={'black'}/>}
-      {orders.ordersList && orders.ordersList.length === 0 && <div>Data Kosong</div>}
+      {orders.ordersList && orders.ordersList.length === 0 && <EmptyOrder />}
       {orders.ordersList &&orders.ordersList.length > 0 && orders.ordersList.map((order) => (
         <div key={order._id} className="bg-white shadow-sm rounded-lg p-6 mb-6">
           <div className="mb-4">
@@ -26,12 +31,18 @@ function OrderList() {
             {order.order_items.map((item) => (
               <div key={item._id} className="flex items-center justify-between mb-2">
                 <div><p className="text-gray-600">
-                  {item.name} ok
+                  {item.name}
                 </p>
                 <p>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}</p>
                 </div>
                 <div>
                 <p className={'text-gray-600'}>Qty: {item.qty}</p>
+                {order.status === 'delivery' && <button
+            className="bg-gray-600 hover:bg-gray-800 text-white py-1 px-4 rounded-full"
+            onClick={() => handleRating(order._id,item.product)}
+          >
+            add Rating
+          </button> }
                 </div>
               </div>
             ))}

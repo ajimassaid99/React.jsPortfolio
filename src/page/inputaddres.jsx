@@ -4,7 +4,7 @@ import FormInput from '../component/FormValidation/formInput';
 import { addAddress } from '../App/feature/addresses/actions';
 import { useDispatch } from 'react-redux';
 
-const AddAddressPage = () => {
+const AddAddressPage = ({onSubmit,setPopup}) => {
   const dispatch = useDispatch();
   const [provinces, setProvinces] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState('');
@@ -107,13 +107,15 @@ const AddAddressPage = () => {
         'kelurahan' : selectedSubDistrictName,
         'detail' : detail
     };
-    console.log(newAddress);
     dispatch(addAddress(newAddress));
+    setSelectedType('');
     setSelectedProvince('');
     setSelectedCity('');
     setSelectedDistrict('');
     setSelectedSubDistrict('');
     setDetail('');
+    onSubmit();
+    setPopup(false);
   };
 
   return (

@@ -25,6 +25,8 @@ export default function Product(props) {
   const price = props.product.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 
   const [showMustLogin, setShowMustLogin] = useState(false);
+  const [status, setStatus] = useState(props.status);
+
 
   useEffect(() => {
     dispatch(getCart());
@@ -34,7 +36,7 @@ export default function Product(props) {
   const handleAddToCart = () => {
     if (props.isLoggedIn) {
       const updatedItems = [
-        ...cartItems,
+        ...cartItems.map((item) => ({ product: {_id:item.product._id}, qty: item.qty })),
         {
           product: {
             _id: props.product._id
@@ -46,9 +48,9 @@ export default function Product(props) {
       const cartData = {
         items: updatedItems
       };
-
+      console.log(cartData);
       dispatch(updateCart(cartData));
-      
+      setStatus(true);
     } else {
       setShowMustLogin(true);
     }
@@ -103,10 +105,10 @@ export default function Product(props) {
             ripple={false}
             fullWidth={true}
             className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:shadow-none hover:scale-105 hover:bg-blue-gray-300 focus:shadow-none focus:scale-105 active:scale-100"
-            disabled={props.status}
+            disabled={status}
             onClick={handleAddToCart}
           >
-            { cart.isLoading ? <Loading /> : props.status?'Added In Cart' : 'Add to Cart'}
+            { cart.isLoading ? <Loading /> : status?'Added In Cart' : 'Add to Cart'}
           </Button>
         ) : (
           <>

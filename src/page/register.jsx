@@ -1,74 +1,166 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Input, Button } from '@material-tailwind/react';
+import React, { useState } from "react";
+import FormInput from "../component/FormValidation/formInput";
+import FormInputPassword from "../component/FormValidation/formInputPassword";
+import logo from "../assets/images/logo.jpg";
+import Loading from "../component/loading/loading";
+import Popup from "../component/PopUp/popUp";
+import axios from "axios";
 
-export default function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+function Register() {
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isFullnameValid, setIsFullnameValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isPasswordConfirmationValid, setIsPasswordConfirmationValid] = useState(true);
+  const [error,setError] = useState('');
+  const [isLoading,setIsLoading] = useState(false);
 
   function handleEmailChange(event) {
-    setEmail(event.target.value);
+    const value = event.target.value;
+    setEmail(value);
+  }
+
+  function handleFullnameChange(event) {
+    const value = event.target.value;
+    setFullname(value);
   }
 
   function handlePasswordChange(event) {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    setPassword(value);
   }
 
-  function handleRememberMeChange(event) {
-    setRememberMe(event.target.checked);
+  function handlePasswordConfirmationChange(event) {
+    const value = event.target.value;
+    setPasswordConfirmation(value);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    // Do something with email, password, and rememberMe state
-    console.log(email, password, rememberMe);
+    const emailIsValid = validateEmail(email);
+    const fullnameIsValid = validateFullname(fullname);
+    const passwordIsValid = validatePassword(password);
+    const passwordConfirmationIsValid = validatePasswordConfirmation(passwordConfirmation);
+
+    setIsEmailValid(emailIsValid);
+    setIsFullnameValid(fullnameIsValid);
+    setIsPasswordValid(passwordIsValid);
+    setIsPasswordConfirmationValid(passwordConfirmationIsValid);
+
+    if (emailIsValid && fullnameIsValid && passwordIsValid && passwordConfirmationIsValid) {
+      let userData = {"full_name":fullname,"email":email,"password":password};
+      setIsLoading(true);
+      setTimeout(() => {
+        axios.post('http://localhost:3002/api/register', userData)
+          .then(() => {
+            setIsLoading(false);
+            window.location='login';
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            setError(error);
+          });
+      }, 2000);
+    }
   }
 
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function validateFullname(fullname) {
+    return fullname.trim() !== "";
+  }
+
+  function validatePassword(password) {
+    return password.length >= 8;
+  }
+
+  function validatePasswordConfirmation(passwordConfirmation) {
+    return passwordConfirmation === password;
+  }
+
+  const isSubmitEnabled = email !== "" && fullname !== "" && password !== "" && passwordConfirmation !== "";
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
+    <section className="gradient-form bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center h-screen">
+      <div className="container">
+        <div className="flex flex-wrap justify-center">
+          <div className="w-full lg:w-2/3 xl:w-1/2">
+            <div className="block rounded-lg bg-white shadow-lg">
+              <div className="flex flex-col lg:flex-row">
+                {/* Left column container */}
+                <div className=" lg:w-1/2 p-6 flex justify-center items-center">
+                  <img src={logo} alt="belum ada source" className="max-w-xs rounded" />
+                </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <Input type="email" label="Email address" autoComplete="email" required value={email} onChange={handleEmailChange} />
-            <Input type="password" label="Password" autoComplete="current-password" required value={password} onChange={handlePasswordChange} />
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  checked={rememberMe}
-                  onChange={handleRememberMeChange}
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <Link to="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </Link>
+                {/* Right column container register form */}
+                <div className="bg-white lg:w-1/2 p-6">
+                  <h2 className="login-heading">Register</h2>
+                  <form className="login-form" onSubmit={handleSubmit}>
+                    <FormInput
+                      label="Email"
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={handleEmailChange}
+                      errorMessage={!isEmailValid && "Please enter a valid email address."}
+                    />
+                    <FormInput
+                      label="Fullname"
+                      id="fullname"
+                      type="text"
+                      value={fullname}
+                      onChange={handleFullnameChange}
+                      errorMessage={!isFullnameValid && "Please enter your fullname."}
+                    />
+                    <FormInputPassword
+                      label="Password"
+                      id="password"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      errorMessage={!isPasswordValid && "Please enter a password with at least 8 characters."}
+                    />
+                    <FormInputPassword
+                      label="Confirm Password"
+                      id="passwordConfirmation"
+                      value={passwordConfirmation}
+                      onChange={handlePasswordConfirmationChange}
+                      errorMessage={!isPasswordConfirmationValid && "Passwords do not match."}
+                    />
+                    <button
+                      className={`bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ${
+                        !isSubmitEnabled ? "opacity-50 cursor-not-allowed" : ""
+                     }`}
+                      type="submit"
+                      disabled={!isSubmitEnabled}
+                    >
+                      {isLoading ? <Loading /> : "Register"}
+                    </button>
+                    {error && (
+                      <div className="text-red-600 mt-2 text-sm">
+                        {error ? (
+                          <Popup message={error}  />
+                        ) : (
+                          <span className="cursor-pointer">
+                            {error}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </form>
+                </div>
               </div>
             </div>
-
-            <div>
-              <Button type="submit" size="lg" block>
-                Sign in
-              </Button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
+
+export default Register;

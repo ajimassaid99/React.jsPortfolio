@@ -3,13 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faSearch, faFilter, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../App/feature/auth/actions';
+import FilterPopup from '../filterBar/filter';
 
-
-const Navbar = ({ isLoggedIn, cartItemsCount }) => {
+const Navbar = ({ isLoggedIn, cartItemsCount, onSearch, onFilterActive }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
   const dispatch = useDispatch();
+
   const handleToggleDropdown = () => {
     setShowDropdown(!showDropdown);
+  };
+
+  const handleToggleFilterPopup = () => {
+    setShowFilterPopup(!showFilterPopup);
   };
 
   const handleLogout = () => {
@@ -20,13 +26,27 @@ const Navbar = ({ isLoggedIn, cartItemsCount }) => {
     }
   };
 
+  const handleSearch = (event) => {
+    onSearch(event.target.value);
+  };
+  const handleClose = (value) => {
+    setShowFilterPopup(value);
+    };
+
+  const handleFilter = (value) => {
+    onFilterActive(value);
+  }
+  
   return (
-    <nav className="bg-gray-900 py-4">
+    <nav className="bg-gray-900 py-4 fixed top-0 left-0 right-0 z-10">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
         <div className="flex items-center">
           <div className="hidden md:block text-white font-bold mr-8">Massaid's Store</div>
           <div className="hidden md:block">
-            <button className="text-white bg-gray-700 p-2 rounded-full hover:bg-black">
+            <button
+              className="text-white bg-gray-700 p-2 rounded-full hover:bg-black"
+              onClick={handleToggleFilterPopup}
+            >
               <FontAwesomeIcon icon={faFilter} className="text-white mr-2" />
               Filter
             </button>
@@ -38,6 +58,7 @@ const Navbar = ({ isLoggedIn, cartItemsCount }) => {
               type="text"
               placeholder="Search"
               className="bg-gray-700 text-white rounded-full pl-10 pr-4 py-2 focus:outline-none focus:shadow-outline"
+              onChange={handleSearch}
             />
             <button className="absolute top-0 right-0 mt-2 mr-2">
               <FontAwesomeIcon icon={faSearch} className="text-white" />
@@ -60,7 +81,7 @@ const Navbar = ({ isLoggedIn, cartItemsCount }) => {
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 bg-gray-500 rounded shadow-md">
                     <ul className="py-2">
-                      <a href='address'><li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li></a>
+                      <a href='account'><li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li></a>
                       <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={handleLogout}>
                         Logout
                       </li>
@@ -78,12 +99,18 @@ const Navbar = ({ isLoggedIn, cartItemsCount }) => {
             )}
           </div>
           <div className="block md:hidden">
-            <button className="text-white mr-2">
+            <button
+              className="text-white mr-2"
+              onClick={handleToggleFilterPopup}
+            >
               <FontAwesomeIcon icon={faFilter} className="text-white" />
             </button>
           </div>
         </div>
       </div>
+      {showFilterPopup && (
+        <FilterPopup   onClose={handleClose} onFilter={handleFilter}/>
+      )}
     </nav>
   );
 };

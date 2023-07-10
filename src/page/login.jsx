@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../App/feature/auth/actions';
 import FormInput from '../component/FormValidation/formInput';
 import FormInputPassword from '../component/FormValidation/formInputPassword';
-import logo from '../assets/images/star.png';
+import logo from '../assets/images/logo.jpg';
 import Loading from '../component/loading/loading';
 import Popup from '../component/PopUp/popUp';
 
@@ -74,8 +74,8 @@ function Login() {
             <div className="block rounded-lg bg-white shadow-lg">
               <div className="flex flex-col lg:flex-row">
                 {/* Left column container */}
-                <div className="bg-green-50 lg:w-1/2 p-6 flex justify-center items-center">
-                  <img src={logo} alt="belum ada source" className="max-w-xs" />
+                <div className="lg:w-1/2 p-6 flex justify-center items-center">
+                  <img src={logo} alt="belum ada source" className="max-w-xs rounded" />
                 </div>
 
                 {/* Right column container login form */}
@@ -104,6 +104,7 @@ function Login() {
               <Popup message="Email/Password Salah" bgcolor="red-500" />
             )}
                   </form>
+                  <a href="register">Don't have accont? Register Now</a>
                 </div>
               </div>
             </div>
