@@ -11,7 +11,7 @@ import {
   UPDATE_QUANTITY
 } from './constants';
 
-const API_BASE_URL = 'http://localhost:3002/api'; // URL dasar API
+const API_BASE_URL = 'https://nice-pear-spider-boot.cyclic.app/api'; // URL dasar API
 
 export const getCart = () => {
   return async (dispatch) => {

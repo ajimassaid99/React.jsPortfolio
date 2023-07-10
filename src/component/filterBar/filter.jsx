@@ -12,11 +12,11 @@ function FilterPopup({onClose,onFilter}) {
   useEffect(() => {
     async function fetchCategorysAndTags() {
       try {
-        const categorysResponse = await fetch('http://localhost:3002/api/categorys');
+        const categorysResponse = await fetch('https://nice-pear-spider-boot.cyclic.app/api/categorys');
         const categorysData = await categorysResponse.json();
         setListCategory(categorysData);
 
-        const tagsResponse = await fetch('http://localhost:3002/api/Tags');
+        const tagsResponse = await fetch('https://nice-pear-spider-boot.cyclic.app/api/Tags');
         const tagsData = await tagsResponse.json();
         setListTags(tagsData);
       } catch (error) {

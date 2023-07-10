@@ -4,7 +4,7 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from './constants
 export const login = (credentials) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST, payload: { isLoading: true } });
   setTimeout(()=>{
-    axios.post('http://localhost:3002/api/login', credentials)
+    axios.post('https://nice-pear-spider-boot.cyclic.app/api/login', credentials)
     .then((response) => {
       const data = response.data;
       localStorage.setItem('token', data.token);
@@ -32,7 +32,7 @@ export const getuser = () => async (dispatch) => {
   };
 
   setTimeout(() => {
-    axios.get('http://localhost:3002/api/me', config)
+    axios.get('https://nice-pear-spider-boot.cyclic.app/api/me', config)
       .then((response) => {
         const data = response.data;
         dispatch({ type: LOGIN_SUCCESS, payload: { isLoading: false, user: data, token } });
@@ -57,7 +57,7 @@ export const logout = () => (dispatch) => {
   };
 
   setTimeout(() => {
-    axios.get('http://localhost:3002/api/logout', config)
+    axios.get('https://nice-pear-spider-boot.cyclic.app/api/logout', config)
       .then(() => {
         localStorage.removeItem('token');
         dispatch({ type: LOGOUT });

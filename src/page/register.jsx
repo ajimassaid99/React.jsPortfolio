@@ -55,7 +55,7 @@ function Register() {
       let userData = {"full_name":fullname,"email":email,"password":password};
       setIsLoading(true);
       setTimeout(() => {
-        axios.post('http://localhost:3002/api/register', userData)
+        axios.post('https://nice-pear-spider-boot.cyclic.app/api/register', userData)
           .then(() => {
             setIsLoading(false);
             window.location='login';
@@ -85,6 +85,11 @@ function Register() {
   }
 
   const isSubmitEnabled = email !== "" && fullname !== "" && password !== "" && passwordConfirmation !== "";
+
+  const token = localStorage.getItem('token');
+  if(token){
+    window.location='home';
+  }
 
   return (
     <section className="gradient-form bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center h-screen">

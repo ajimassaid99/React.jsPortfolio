@@ -17,7 +17,7 @@ export const getInvoice = (invoiceId) => {
   return async (dispatch) => {
     dispatch({ type: GET_INVOICE_REQUEST });
     try {
-      const response = await axios.get(`http://localhost:3002/api/invoices/${invoiceId}`,config);
+      const response = await axios.get(`https://nice-pear-spider-boot.cyclic.app/api/invoices/${invoiceId}`,config);
       dispatch({
         type: GET_INVOICE_SUCCESS,
         payload: response.data

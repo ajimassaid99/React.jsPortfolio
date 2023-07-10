@@ -24,7 +24,7 @@ export const getAddress = () => {
 
     setTimeout(async () => {
       try {
-        const response = await axios.get('http://localhost:3002/api/DeleveryAddress', config);
+        const response = await axios.get('https://nice-pear-spider-boot.cyclic.app/api/DeleveryAddress', config);
         dispatch({
           type: GET_ADDRESS_SUCCESS,
           payload: response.data,
@@ -44,7 +44,7 @@ export const deleteAddress = (id) => {
       dispatch({ type: DELETE_ADDRESS_REQUEST });
       try {
 
-        const response= await axios.delete(`http://localhost:3002/api/DeleveryAddress/${id}`, config);
+        const response= await axios.delete(`https://nice-pear-spider-boot.cyclic.app/api/DeleveryAddress/${id}`, config);
         console.log(response);
         dispatch({
           type: DELETE_ADDRESS_SUCCESS,
@@ -63,7 +63,7 @@ export const deleteAddress = (id) => {
     return async (dispatch) => {
       dispatch({ type: ADD_ADDRESS_REQUEST });
       try {
-        const response = await axios.post('http://localhost:3002/api/DeleveryAddress', newAddress, config);
+        const response = await axios.post('https://nice-pear-spider-boot.cyclic.app/api/DeleveryAddress', newAddress, config);
         dispatch({
           type: ADD_ADDRESS_SUCCESS,
           payload: response,

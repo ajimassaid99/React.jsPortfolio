@@ -3,124 +3,131 @@ import axios from 'axios';
 import FormInput from '../component/FormValidation/formInput';
 import { addAddress } from '../App/feature/addresses/actions';
 import { useDispatch } from 'react-redux';
-
-const AddAddressPage = ({onSubmit,setPopup}) => {
-  const dispatch = useDispatch();
-  const [provinces, setProvinces] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [districts, setDistricts] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState('');
-  const [subDistricts, setSubDistricts] = useState([]);
-  const [selectedSubDistrict, setSelectedSubDistrict] = useState('');
-  const [detail,setDetail] = useState('');
-  const [selectedProvinceName, setSelectedProvinceName] = useState('');
-  const [selectedCityName, setSelectedCityName] = useState('');
-  const [selectedDistrictName, setSelectedDistrictName] = useState('');
-  const [selectedSubDistrictName, setSelectedSubDistrictName] = useState('');
-  const [selectedType,setSelectedType] = useState('');
-
-  useEffect(() => {
-    const fetchProvinces = async () => {
+const AddAddressPage = ({ onSubmit, setPopup }) => {
+    const dispatch = useDispatch();
+    const [provinces, setProvinces] = useState([]);
+    const [selectedProvince, setSelectedProvince] = useState('');
+    const [cities, setCities] = useState([]);
+    const [selectedCity, setSelectedCity] = useState('');
+    const [districts, setDistricts] = useState([]);
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [subDistricts, setSubDistricts] = useState([]);
+    const [selectedSubDistrict, setSelectedSubDistrict] = useState('');
+    const [detail, setDetail] = useState('');
+    const [selectedProvinceName, setSelectedProvinceName] = useState('');
+    const [selectedCityName, setSelectedCityName] = useState('');
+    const [selectedDistrictName, setSelectedDistrictName] = useState('');
+    const [selectedSubDistrictName, setSelectedSubDistrictName] = useState('');
+    const [selectedType, setSelectedType] = useState('');
+  
+    useEffect(() => {
+      const fetchProvinces = async () => {
+        try {
+          const response = await axios.get('https://dev.farizdotid.com/api/daerahindonesia/provinsi');
+          setProvinces(response.data.provinsi);
+        } catch (error) {
+          console.error('Error fetching provinces:', error);
+        }
+      };
+  
+      fetchProvinces();
+    }, []);
+  
+    const handleTypeChange = (event) => {
+      setSelectedType(event.target.value);
+    };
+  
+    const handleProvinceChange = async (event) => {
+      const provinceId = event.target.value;
+      const provinceName = event.target.options[event.target.selectedIndex].text;
+      setSelectedProvince(provinceId);
+      setSelectedProvinceName(provinceName);
+      setSelectedCity('');
+      setSelectedDistrict('');
+      setSelectedSubDistrict('');
+  
       try {
-        const response = await axios.get('https://dev.farizdotid.com/api/daerahindonesia/provinsi');
-        setProvinces(response.data.provinsi);
+        const response = await axios.get(`http://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${provinceId}`);
+        setCities(response.data.kota_kabupaten);
       } catch (error) {
-        console.error('Error fetching provinces:', error);
+        console.error('Error fetching cities:', error);
       }
     };
-
-    fetchProvinces();
-  }, []);
-
-  const handleTypeChange = (event)=>{
-    setSelectedType(event.target.value);
-  }
-
-  const handleProvinceChange = async (event) => {
-    const provinceId = event.target.value;
-    const provinceName = event.target.options[event.target.selectedIndex].text;
-    setSelectedProvince(provinceId);
-    setSelectedProvinceName(provinceName);
-    setSelectedCity('');
-    setSelectedDistrict('');
-    setSelectedSubDistrict('');
-
-    try {
-      const response = await axios.get(`http://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${provinceId}`);
-      setCities(response.data.kota_kabupaten);
-    } catch (error) {
-      console.error('Error fetching cities:', error);
-    }
-  };
-
-  const handleCityChange = async (event) => {
-    const cityId = event.target.value;
-    const cityName = event.target.options[event.target.selectedIndex].text;
-    setSelectedCity(cityId);
-    setSelectedCityName(cityName);
-    setSelectedDistrict('');
-    setSelectedSubDistrict('');
-
-    try {
-      const response = await axios.get(`https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=${cityId}`);
-      setDistricts(response.data.kecamatan);
-    } catch (error) {
-      console.error('Error fetching districts:', error);
-    }
-  };
-
-  const handleDistrictChange = async (event) => {
-    const districtId = event.target.value;
-    const districtName = event.target.options[event.target.selectedIndex].text;
-    setSelectedDistrict(districtId);
-    setSelectedDistrictName(districtName);
-    setSelectedSubDistrict('');
-
-    try {
-      const response = await axios.get(`https://dev.farizdotid.com/api/daerahindonesia/kelurahan?id_kecamatan=${districtId}`);
-      setSubDistricts(response.data.kelurahan);
-    } catch (error) {
-      console.error('Error fetching sub-districts:', error);
-    }
-  };
-
-  const handleSubDistrictChange = (event) => {
-    const subDistrictId = event.target.value;
-    const subDistrictName = event.target.options[event.target.selectedIndex].text;
-    setSelectedSubDistrict(subDistrictId);
-    setSelectedSubDistrictName(subDistrictName);
-  };
-  function handledetailChange(event) {
-    const value = event.target.value;
-    setDetail(value);
-  }
-
-  const handleSubmit =(event) => {
-    event.preventDefault();
-    let newAddress = {
-        'nama': selectedType,
-        'provinsi' : selectedProvinceName,
-        'kabupaten' : selectedCityName,
-        'kecamatan' : selectedDistrictName,
-        'kelurahan' : selectedSubDistrictName,
-        'detail' : detail
+  
+    const handleCityChange = async (event) => {
+      const cityId = event.target.value;
+      const cityName = event.target.options[event.target.selectedIndex].text;
+      setSelectedCity(cityId);
+      setSelectedCityName(cityName);
+      setSelectedDistrict('');
+      setSelectedSubDistrict('');
+  
+      try {
+        const response = await axios.get(`https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=${cityId}`);
+        setDistricts(response.data.kecamatan);
+      } catch (error) {
+        console.error('Error fetching districts:', error);
+      }
     };
-    dispatch(addAddress(newAddress));
-    setSelectedType('');
-    setSelectedProvince('');
-    setSelectedCity('');
-    setSelectedDistrict('');
-    setSelectedSubDistrict('');
-    setDetail('');
-    onSubmit();
-    setPopup(false);
-  };
-
-  return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Add Address</h1>
+  
+    const handleDistrictChange = async (event) => {
+      const districtId = event.target.value;
+      const districtName = event.target.options[event.target.selectedIndex].text;
+      setSelectedDistrict(districtId);
+      setSelectedDistrictName(districtName);
+      setSelectedSubDistrict('');
+  
+      try {
+        const response = await axios.get(`https://dev.farizdotid.com/api/daerahindonesia/kelurahan?id_kecamatan=${districtId}`);
+        setSubDistricts(response.data.kelurahan);
+      } catch (error) {
+        console.error('Error fetching sub-districts:', error);
+      }
+    };
+  
+    const handleSubDistrictChange = (event) => {
+      const subDistrictId = event.target.value;
+      const subDistrictName = event.target.options[event.target.selectedIndex].text;
+      setSelectedSubDistrict(subDistrictId);
+      setSelectedSubDistrictName(subDistrictName);
+    };
+  
+    function handledetailChange(event) {
+      const value = event.target.value;
+      setDetail(value);
+    }
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      let newAddress = {
+        nama: selectedType,
+        provinsi: selectedProvinceName,
+        kabupaten: selectedCityName,
+        kecamatan: selectedDistrictName,
+        kelurahan: selectedSubDistrictName,
+        detail: detail
+      };
+      dispatch(addAddress(newAddress));
+      setSelectedType('');
+      setSelectedProvince('');
+      setSelectedCity('');
+      setSelectedDistrict('');
+      setSelectedSubDistrict('');
+      setDetail('');
+      onSubmit();
+      setPopup(false);
+    };
+  
+    const handleClose = () => {
+      setPopup(false);
+    };
+  
+    return (
+      <>
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-4 w-96">
+            <h1 className="text-3xl font-bold mb-6">Add Address</h1>
+            
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       <div>
           <label htmlFor="province" className="block text-sm font-medium text-gray-700">
@@ -227,15 +234,25 @@ const AddAddressPage = ({onSubmit,setPopup}) => {
             required
           />
         </div>
-        <button
-          type="submit"
-          className="block items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest bg-gray-600 hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-50"
-          disabled={!selectedSubDistrict || !detail}
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+       <div className="flex justify-end">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded ml-2"
+                disabled={!selectedSubDistrict || !detail}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 

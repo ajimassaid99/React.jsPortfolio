@@ -5,7 +5,11 @@ import Profile from '../component/profile/profile';
 
 function AccountPage() {
 
-
+  const token = localStorage.getItem('token');
+  if(!token){
+    window.location='home';
+  }
+  
   return (
     <div className="relative lg:flex lg:flex-row lg:max-h-screen">
       <Sidebar  />

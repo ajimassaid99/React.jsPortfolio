@@ -5,6 +5,10 @@ import OrderList from '../component/order/orders';
 
 function OrderPage() {
 
+    const token = localStorage.getItem('token');
+    if(!token){
+      window.location='home';
+    }
 
   return (
     <div className="relative lg:flex lg:flex-row lg:max-h-screen">

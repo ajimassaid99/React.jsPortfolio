@@ -7,7 +7,7 @@ import {
   GET_PRODUCTS_FAILURE,
 } from './constants';
 
-const API_BASE_URL = 'http://localhost:3002/api'; // URL dasar API
+const API_BASE_URL = 'https://nice-pear-spider-boot.cyclic.app/api';
 
 export const getProducts = (search,cat,tags,skip,limit) => {
   return  (dispatch) => {

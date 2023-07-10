@@ -46,7 +46,7 @@ function SummaryPage() {
           Authorization: `Bearer ${token}`
         }
       };
-      const response = await axios.post('http://localhost:3002/api/orders', order, config);
+      const response = await axios.post('https://nice-pear-spider-boot.cyclic.app/api/orders', order, config);
       const id = response.data._id; 
       window.location=`order-succesed/${id}`
     } catch (error) {

@@ -66,6 +66,12 @@ function Login() {
 
   const isSubmitEnabled = email !== '' && password !== '';
 
+  const token = localStorage.getItem('token');
+  if(token){
+    window.location='home';
+  }
+  
+
   return (
     <section className="gradient-form bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center h-screen">
       <div className="container">

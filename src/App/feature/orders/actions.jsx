@@ -17,7 +17,7 @@ export const getOrders = () => {
     dispatch({ type: GET_ORDERS_REQUEST });
     setTimeout(async () => {
     try {
-      const response = await axios.get('http://localhost:3002/api/orders',config);
+      const response = await axios.get('https://nice-pear-spider-boot.cyclic.app/api/orders',config);
       dispatch({
         type: GET_ORDERS_SUCCESS,
         payload: response.data
