@@ -25,7 +25,7 @@ export const getCart = () => {
       };
       const response = await axios.get(`${API_BASE_URL}/Cart`, config);
       const cart = response.data;
-      console.log(cart);
+      console.log("aa",cart);
       dispatch({ type: GET_CART_SUCCESS, payload: cart.items });
     } catch (error) {
       console.error('Error:', error);

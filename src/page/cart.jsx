@@ -6,6 +6,8 @@ import { updateCart } from '../App/feature/cart/actions';
 import { getProducts } from '../App/feature/products/actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Navbar from '../component/Navbar/navbar';
+import EmptyCart from '../component/cart/emptyCart';
 
 export default function CartPage() {
     const dispatch = useDispatch();
@@ -94,12 +96,16 @@ export default function CartPage() {
     };
   
     return (
+        <div><Navbar isLoggedIn={true} cartItemsCount={cartItems.length}/>
       <div className="container mx-auto px-12 py-10 bg-white">
         <h1 className="text-3xl font-bold mb-6">Cart</h1>
         {cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <EmptyCart />
         ) : (
-          <div className="flex flex-col">
+            <div className="flex flex-col">
+            <Button className='block w-48 bg-gray-500' onClick={() => window.location='/home'}>
+              Lanjut Belanja
+            </Button>
             {cartItems.map((item) => (
               <div key={item.product._id} className="flex items-center border-b py-4">
                 <img
@@ -145,12 +151,14 @@ export default function CartPage() {
               <Button
                 ripple={false}
                 className="bg-gray-500 hover:bg-gray-600 text-white my-12"
+                onClick={() => window.location='/summary'}
               >
                 Checkout
               </Button>
             </div>
           </div>
         )}
+      </div>
       </div>
     );
   }

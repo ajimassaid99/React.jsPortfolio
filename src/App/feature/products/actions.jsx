@@ -9,13 +9,13 @@ import {
 
 const API_BASE_URL = 'http://localhost:3002/api'; // URL dasar API
 
-export const getProducts = () => {
+export const getProducts = (search,cat,tags,skip,limit) => {
   return  (dispatch) => {
     dispatch({ type: GET_PRODUCTS_REQUEST });
 
     try {
       setTimeout(async()=>{
-      const response = await axios.get(`${API_BASE_URL}/products`);
+      const response = await axios.get(`${API_BASE_URL}/products?search=${search}&category=${cat}&tags=${tags}&skip=${skip}&limit=${limit}`);
       const products = response.data;
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products })
       },2000);
